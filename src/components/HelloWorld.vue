@@ -1,8 +1,12 @@
 <template>
   <div>
     <input id="select_pic" type="file" v-on:change="onInputFileChange">
+    <div>
+      <input value="input some json."/>
+      <button>apply</button>
+    </div>
     <div class="preview">
-      <img id="image" v-bind:src="img_src" v-on:load="onImgload"/>
+      <img id="preview_img" v-bind:src="img_src" v-on:load="onImgload"/>
       <p id="info" v-text="img_info"/>
     </div>
   </div>
@@ -41,15 +45,18 @@ export default class HelloWorld extends Vue {
     img_info: ''
   }
 
-  public beforeMount(){
-    this.curInput = document.querySelector("#select_pic");
-    this.curImg = document.querySelector('#image');
-    this.curImgInfo = document.querySelector('#info');
+  public onImgload(e){
+    
+    this.width = e.currentTarget.width;
+    this.height = e.currentTarget.height;
+    console.log("on image loaded, width is %s and height is %s",this.width,this.height);
+  }
 
-    this.curImg.onImgload = function(){
-      this.width = this.curImg.width;
-      this.height = this.curImg.height;
-    };
+  public mounted(){
+    console.log("start mount");
+    this.curInput = document.querySelector("#select_pic");
+    this.curImg = document.querySelector('img');
+    this.curImgInfo = document.querySelector('#info');
   }
   
   public validFileType (file) {
